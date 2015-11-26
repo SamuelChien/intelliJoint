@@ -48,9 +48,9 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '127.0.0.1';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
+$db['default']['hostname'] = 'us-cdbr-azure-east-a.cloudapp.net';
+$db['default']['username'] = 'b3334f72c12090';
+$db['default']['password'] = '844a949c';
 $db['default']['database'] = 'intellijoint';  
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
