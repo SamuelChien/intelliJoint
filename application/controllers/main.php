@@ -28,8 +28,9 @@ class Main extends CI_Controller {
 
     function sentData($dataVal)
     {
-        $data['dataVal'] = $dataVal;
-        $this->load->view('displayData', $data);
+        $this->load->view('home');
+        // $data['dataVal'] = $dataVal;
+        // $this->load->view('displayData', $data);
     }
 }
 
