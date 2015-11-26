@@ -28,9 +28,10 @@ class Main extends CI_Controller {
 
     function sentData($dataVal)
     {
-        $this->load->view('home');
-        // $data['dataVal'] = $dataVal;
-        // $this->load->view('displayData', $data);
+        $this->load->model('recommendation');
+        $this->recommendation->insertData($dataVal);
+        $data['dataVal'] = $dataVal;
+        $this->load->view('displayData', $data);
     }
 }
 
