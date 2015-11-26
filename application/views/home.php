@@ -1,3 +1,3 @@
 <?php $this->load->view('header');?>
-      hello world2
+      hello world
 <?php $this->load->view('footer');?>
