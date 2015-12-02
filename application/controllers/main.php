@@ -34,6 +34,8 @@ class Main extends CI_Controller {
         $this->load->view('displayData', $data);
     }
 
+
+
     function getGraphInitialData()
     {
         $this->load->model('recommendation');
@@ -59,5 +61,42 @@ class Main extends CI_Controller {
 
         echo json_encode($output);
     }
+
+     function repcount(){
+
+        
+        $data['dataVal'] = $this->modal->get_rep_count();
+
+        $this->load->view('displayData', $data);
+    }
+
+    function getmin(){
+
+        $data['dataVal'] = $this->modal->get_min();
+
+        $this->load->view('displayData', $data);
+
+    }
+
+    function getmax(){
+
+    $data['dataVal'] = $this->modal->get_max();
+
+    $this->load->view('displayData', $data);
+
+    }
+
+    function findalert(){
+
+    $data['dataVal'] = $this->modal->find_alert();
+
+    $this->load->view('displayData', $data);
+
+    }
+
+
+}
+
+
 }
 

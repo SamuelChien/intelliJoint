@@ -34,6 +34,135 @@ class Modal
         return $this->getTableStringByAppQuery($query);
     }
 
+    function get_rep_count($startTime,$endTime){
+
+        $this->CI->load->model('recommendation');
+        $query1 = $this->CI->recommendation->rep_count($startTime,$endTime);
+        $counter = 0;
+        $temp = 0;
+        foreach ($query1->result() as $row) {
+            if ((int)$row->up != $temp){
+                $counter +=1;
+                $temp = (int)$row->up;
+            }
+        }
+        return $counter/2;
+
+    }
+
+    function get_min($startTime,$endTime){
+
+        $this->CI->load->model('recommendation');
+        $query = $this->CI->recommendation->get_all_down($startTime,$endTime);
+
+        $previous = 0;
+        $min = 0;
+        $move = 1;
+        $valueList = array();
+
+        foreach ($query->result() as $row){
+   
+            if ((int)$row->ID == $previous+10 ){ // same rep
+
+
+                if ((int)$row->sensorVal < $valueList[$move-1]){ //check if min
+                 
+                    $valueList[$move-1] = (int)$row->sensorVal;
+                    
+                }
+                $previous = (int)$row->ID;
+              
+               
+            } else {// not same rep
+                $valueList[$move] = (int)$row->sensorVal;
+                $previous = (int)$row->ID;
+                $move +=1;
+            }
+        }
+        return $valueList;
+
+    }
+
+
+    function get_max($startTime,$endTime){
+
+        $this->CI->load->model('recommendation');
+        $query = $this->CI->recommendation->get_all_up($startTime,$endTime);
+
+        $previous = 0;
+        $max = 0;
+        $move = 1;
+        $valueList = array();
+
+        foreach ($query->result() as $row){
+   
+            if ((int)$row->ID == $previous+10 ){ // same rep
+
+                if ((int)$row->sensorVal > $valueList[$move-1]){ //check if max
+                 
+                    $valueList[$move-1] = (int)$row->sensorVal;
+                    
+                }
+                $previous = (int)$row->ID;
+              
+               
+            } else {// not same rep
+                $valueList[$move] = (int)$row->sensorVal;
+                $previous = (int)$row->ID;
+                $move +=1;
+            }
+        }
+        return $valueList;
+
+    }
+
+    function find_alert($startTime,$endTime){
+
+        $low = $this->get_min($startTime,$endTime);
+        $high = $this->get_max($startTime,$endTime);
+
+        //check if the val is within range
+
+        $alert = 0;
+
+        foreach ($low as $v){
+
+
+            if ($v < 515) {
+
+                $alert +=1;
+            }
+
+        }
+
+
+        foreach ($high as $v){
+
+
+            if ($v > 775) {
+
+                $alert +=1;
+            }
+
+        }
+
+        return $alert;
+
+    }
+
+    function getTableStringByAppQuery($query)
+    {
+        $tableString = "<div class='gridrow'>";
+@@ -230,6 +346,8 @@ class Modal
+        $userDistance[$userId] = $score;
+        return array_keys($userDistance, min($userDistance))[0];
+    }
+
+
+}
+
+
+
     function getTableStringByAppQuery($query)
     {
         $tableString = "<div class='gridrow'>";
