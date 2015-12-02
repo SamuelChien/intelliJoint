@@ -22,6 +22,17 @@ class Recommendation extends CI_Model {
 	function insertData($data){
 		$this->db->query("INSERT INTO sensordata (sensorVal) VALUES (".$data.")");
 	}
+
+     function getGraphInitalData(){
+          $query = $this->db->query("SELECT UNIX_TIMESTAMP(curTime) * 1000 + ID%1000 AS time, sensorVal FROM sensordata ORDER BY UNIX_TIMESTAMP(curTime) * 1000 + ID%1000 DESC LIMIT 100");
+          return $query;
+     }
+
+     function getNextTwentyGraphingPoints($startTime)
+     {
+          $query = $this->db->query("SELECT UNIX_TIMESTAMP(curTime) * 1000 + ID%1000 AS time, sensorVal FROM sensordata WHERE UNIX_TIMESTAMP(curTime) * 1000 + ID%1000 > ".$startTime." ORDER BY UNIX_TIMESTAMP(curTime) * 1000 + ID%1000 LIMIT 2");
+          return $query;
+     }
 }
 
 /* End of file admin.php */

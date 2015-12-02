@@ -23,7 +23,7 @@ class Main extends CI_Controller {
      */
     function index() 
     {
-        $this->load->view('home');
+        $this->load->view('main');
     }
 
     function sentData($dataVal)
@@ -32,6 +32,32 @@ class Main extends CI_Controller {
         $this->recommendation->insertData($dataVal);
         $data['dataVal'] = $dataVal;
         $this->load->view('displayData', $data);
+    }
+
+    function getGraphInitialData()
+    {
+        $this->load->model('recommendation');
+        $query = $this->recommendation->getGraphInitalData();
+        $output = array();
+        foreach ($query->result() as $row)
+        {
+            array_push($output, [(int)$row->time, (int)$row->sensorVal]);
+        }
+
+        echo json_encode(array_reverse($output));
+    }
+
+    function getNextTwentyGraphingPoints($startTime)
+    {
+        $this->load->model('recommendation');
+        $query = $this->recommendation->getNextTwentyGraphingPoints($startTime);
+        $output = array();
+        foreach ($query->result() as $row)
+        {
+            array_push($output, [(int)$row->time, (int)$row->sensorVal]);
+        }
+
+        echo json_encode($output);
     }
 }
 
